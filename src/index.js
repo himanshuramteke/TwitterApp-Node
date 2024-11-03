@@ -1,7 +1,14 @@
 import express from "express";
+import morgan from 'morgan';
 
 //Create a new express app/server object
 const app = express();
+
+app.use(morgan('combined'));
+
+app.use(express.json());
+app.use(express.text());
+app.use(express.urlencoded());
 
 app.get('/ping', (req, res) => {
     return res.json({
@@ -9,7 +16,7 @@ app.get('/ping', (req, res) => {
     });
 }); //what to do if someone makes a GET request to /ping
 
-app.post('/hello', (req, res) => {
+app.post('/hello/*', (req, res) => {
     console.log("query params", req.query);
     console.log("req body", req.body);
     return res.json({
@@ -21,6 +28,12 @@ app.get('/tweets/:tweet_id/comments_id', (req, res) => {
     console.log(req.params); //url params
     return res.json({
         message: 'tweet details'
+    });
+});
+
+app.all('*', (req, res) => {
+    return res.status(404).json({
+        message: 'Not found'
     });
 });
 
