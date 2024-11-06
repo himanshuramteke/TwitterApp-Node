@@ -10,6 +10,10 @@ app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded());
 
+app.get('/', (req, res) => {
+    res.render('home', {name: 'John Doe'});
+});
+
 app.get('/ping', (req, res) => {
     return res.json({
         message: 'pong'
