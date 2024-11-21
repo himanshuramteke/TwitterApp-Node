@@ -1,13 +1,13 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { s3 } from './awsConfig.js';
-import { AWS_BUCKET_NAME } from "./serverConfig";
+import { AWS_BUCKET_NAME } from "./serverConfig.js";
 
 export const s3Uploader = multer({
     storage: multerS3({
         s3: s3,
         bucket: AWS_BUCKET_NAME,
-        key: function (req, res, cb) {
+        key: function (req, file, cb) {
             if(!file) {
                 return cb(new Error('No file found'));
             }
@@ -18,7 +18,7 @@ export const s3Uploader = multer({
 
             const fileExtension = file.originalname.split('.')[1];
 
-            cb(null, Date.now().toString+"."+fileExtension);
+            cb(null, Date.now().toString()+"."+fileExtension);
         }
     })
 });
